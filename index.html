@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sistema de Tickets</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <label for="menu-toggle" class="menu-btn" aria-label="Abrir menú">☰</label>
+    <h1 class="logo">Sistema de Tickets</h1>
+    <nav class="main-nav">
+      <a href="#">Panel</a>
+      <a href="#">Tickets</a>
+      <a href="#">Nuevo</a>
+    </nav>
+  </header>
+
+  <input type="checkbox" id="menu-toggle" class="menu-toggle" aria-hidden="true">
+  <aside class="drawer">
+    <nav class="drawer-nav">
+      <a href="#">Panel</a>
+      <a href="#">Tickets</a>
+      <a href="#">Nuevo</a>
+    </nav>
+  </aside>
+
+  <label for="menu-toggle" class="drawer-backdrop" aria-hidden="true"></label>
+
+  <main>
+        
+    <section class="form-section">
+      <h2>Nuevo ticket</h2>
+      <form id="form-ticket">
+        <label for="input-titulo">Título</label>
+        <input type="text" id="input-titulo" >
+        <p id="msg-error" style="display: none; color:#A32D2D;font-size: 0.88rem; margin-top: 4px;" ></p>
+
+        <label for="input-descripcion">Descripción</label>
+        <textarea id="input-descripcion" rows="3"></textarea>
+
+        <label for="input-prioridad">Prioridad</label>
+        <select id="input-prioridad">
+          <option>Baja</option>
+          <option>Media</option>
+          <option>Alta</option>
+        </select>
+
+        <label for="input-estado">Estado</label>
+        <select id="input-estado">
+          <option value="Nuevo">Nuevo</option>
+          <option value="En Curso">En Curso</option>
+          <option value="Urgente">Urgente</option>
+          <option value="Resuelto">Resuelto</option>
+        </select>
+
+        <button type="submit" id="btn-crear">Crear ticket</button>
+      </form>
+
+      <div class="barra-estado">
+        <p id="msg-exito" style="display: none; color: #0F6E56; background: #D1F2E6; padding: 8px 12px; border-radius: 6px;font-size: 0.88rem;margin-top: 4px;" ></p>
+        <p>Tickets registrados: <span id="contador">0</span></p>
+
+        <button type="button" id="btn-limpiar" class="btn-secundario">
+          Limpiar tarjetas
+        </button>
+      </div>
+    </section>
+
+    <section class="tickets-section">
+      <h2>Mis tickets</h2>
+      <div class="ticket-list" id="panel-tickets">
+        
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
