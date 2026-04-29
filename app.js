@@ -31,17 +31,6 @@ function mostrarError(msg){
 }
 
 function getBadgesClass(estado){
-    // if (estado === "Nuevo"){
-    //     return "badge badge--new"
-    // }else if(estado === "En Curso"){
-    //     return "badge badge--active"
-    // }else if(estado === "Urgente"){
-    //     return "badge badge--urgent"
-    // }else if(estado === "Resuelto"){
-    //     return "badge badge--closed"
-    // }else{
-    //     return "badge badge--closed"
-    // }
 
     if(estado === "Nuevo") return "badge badge--new"
     if(estado === "En Curso") return "badge badge--active"
