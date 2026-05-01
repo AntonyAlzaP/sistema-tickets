@@ -29,35 +29,51 @@
 
   <label for="menu-toggle" class="drawer-backdrop" aria-hidden="true"></label>
 
+  <section class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h2 class="hero-titulo"> Gestiona tus tareas con claridad</h2>
+      <p class="hero-subtitulo">Crea, organiza y resuelve tickets en segundos</p>
+      <button class="btn-hero" id="btn-hero-crear">Crear un ticket</button>
+    </div>
+  </section>
+
+  <section class="stats-bar">
+
+    <div class="stat-item">
+      <span class="stat-numero" id="stat-total">0</span>
+      <span class="stat-label">Total</span>
+    </div>
+
+    <div class="stat-item">
+      <span class="stat-numero" id="stat-nuevos">0</span>
+      <span class="stat-label">Nuevos</span>
+    </div>
+
+    <div class="stat-item">
+      <span class="stat-numero" id="stat-curso">0</span>
+      <span class="stat-label">En Curso</span>
+    </div>
+
+    <div class="stat-item">
+      <span class="stat-numero" id="stat-resueltos">0</span>
+      <span class="stat-label">Resuelto</span>
+    </div>
+
+  </section>
+
   <main>
         
     <section class="form-section">
-      <h2>Nuevo ticket</h2>
-      <form id="form-ticket">
-        <label for="input-titulo">Título</label>
-        <input type="text" id="input-titulo" >
-        <p id="msg-error" style="display: none; color:#A32D2D;font-size: 0.88rem; margin-top: 4px;" ></p>
-
-        <label for="input-descripcion">Descripción</label>
-        <textarea id="input-descripcion" rows="3"></textarea>
-
-        <label for="input-prioridad">Prioridad</label>
-        <select id="input-prioridad">
-          <option>Baja</option>
-          <option>Media</option>
-          <option>Alta</option>
-        </select>
-
-        <label for="input-estado">Estado</label>
-        <select id="input-estado">
-          <option value="Nuevo">Nuevo</option>
-          <option value="En Curso">En Curso</option>
-          <option value="Urgente">Urgente</option>
-          <option value="Resuelto">Resuelto</option>
-        </select>
-
-        <button type="submit" id="btn-crear">Crear ticket</button>
-      </form>
+      
+      <div class="filtros">
+        <button class="filtro-btn activo" data-filtro="todos">Todos</button>
+        <button class="filtro-btn" data-filtro="Nuevo">Nuevos</button>
+        <button class="filtro-btn" data-filtro="En Curso">En curso</button>
+        <button class="filtro-btn" data-filtro="Urgente">Urgentes</button>
+        <button class="filtro-btn" data-filtro="Resuelto">Resuelto</button>
+      </div>
+      
 
       <div class="barra-estado">
         <p id="msg-exito" style="display: none; color: #0F6E56; background: #D1F2E6; padding: 8px 12px; border-radius: 6px;font-size: 0.88rem;margin-top: 4px;" ></p>
@@ -77,6 +93,54 @@
     </section>
   </main>
 
+  <div class="modal-overlay" id="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2 class="modal-titulo" id="modal-titulo">Nuevo Ticket</h2>
+        <button class="modal-cerrar" id="btn-modal-cerrar">X</button>
+      </div>
+      <form id="form-ticket" class="modal-form" novalidate>
+        <p id="msg-error" class="msg msg--error" style="display: none;"></p>
+
+        <div class="campo">
+          <label for="input-titulo" class="campo-label" >Título <span class="requerido">*</span> </label>
+          <input type="text" id="input-titulo" class="campo-input">
+        </div>
+
+        <div class="campo">
+          <label for="input-descripcion" class="campo-label">Descripción</label>
+          <textarea id="input-descripcion" rows="3" class="campo-input"></textarea>
+        </div>
+        
+        <div class="campos-fila">
+          <div class="campo">
+            <label for="input-prioridad" class="campo-label">Prioridad</label>
+            <select id="input-prioridad" class="campo-input">
+              <option value="Baja">Baja</option>
+              <option value="Media">Media</option>
+              <option value="Alta">Alta</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="input-estado" class="campo-label">Estado</label>
+            <select id="input-estado" class="campo-input">
+              <option value="Nuevo">Nuevo</option>
+              <option value="En Curso">En Curso</option>
+              <option value="Urgente">Urgente</option>
+              <option value="Resuelto">Resuelto</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn-cancelar" id="btn-cancelar-modal">Cancelar</button>
+          <button type="submit" class="btn-guardar" id="btn-crear">Crear ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="alert" aria-live="polite"></div>
   <script src="app.js" defer></script>
 </body>
 </html>
