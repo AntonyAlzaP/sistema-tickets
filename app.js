@@ -1,6 +1,43 @@
 
+let filtroActual = "todos"
 let indiceEditando = null;
 let tickets = [];
+
+const toastEl = document.getElementById("toast");
+const modalOverlay = document.getElementById("modal-overlay");
+// const btnAbrirModal = document.getElementById("btn-abrir-modal");
+const btnHeroCrear = document.getElementById("btn-hero-crear");
+const btnCerrarModal = document.getElementById("btn-modal-cerrar");
+const btnCancelarModal = document.getElementById("btn-cancelar-modal");
+const panelTickets = document.getElementById("panel-tickets");
+const formTicket = document.getElementById("form-ticket");
+
+function abrirModal(){
+    modalOverlay.classList.add("activo");
+    document.body.style.overflow = "hidden";
+    document.getElementById("modal-titulo").focus();
+}
+
+function cerrarModal(){
+    modalOverlay.classList.remove("activo");
+    document.body.style.overflow = "";
+    resetearFormulario();
+}
+
+modalOverlay.addEventListener("click", function(e){
+    if(e.target === modalOverlay) cerrarModal();
+});
+
+document.addEventListener("keydown", function(e){
+    if(e.key == "Escape" && modalOverlay.classList.contains("activo")){
+        cerrarModal();
+    }
+});
+
+// btnAbrirModal.addEventListener("click", abrirModal);
+btnHeroCrear.addEventListener("click", abrirModal);
+btnCerrarModal.addEventListener("click", cerrarModal);
+btnCancelarModal.addEventListener("click", cerrarModal);
 
 function mostrarExito(msg){
     let el = document.getElementById("msg-exito");
@@ -16,8 +53,30 @@ function mostrarExito(msg){
     )
 }
 
+function aplicarFiltro(filtro){
+    filtroActual = filtro;
+
+    document.querySelectorAll(".filtro-btn").forEach(function(btn){
+        btn.classList.toggle("activo", btn.dataset.filtro === filtro);
+    });
+
+    panelTickets.querySelectorAll(".ticket").forEach(function(tarjeta){
+        
+        const estado = tarjeta.dataset.estado;
+        const visible = filtro === "todos" || estado === filtro;
+      
+        tarjeta.style.display = visible ? "" : "none";
+    });
+}
+
+document.querySelectorAll(".filtro-btn").forEach(function(btn){
+    btn.addEventListener("click",function(){
+        aplicarFiltro(btn.dataset.filtro);
+    })
+});
+
 function renderizarTodos(){
-    document.getElementById("panel-tickets").innerHTML = "";
+    panelTickets.innerHTML = "";
 
     tickets.forEach(function(t, i){
         crearTarjeta(t, i);
@@ -49,7 +108,8 @@ function crearTarjeta(parametro1, indice){
 
     div.className = "tarjeta";
     div.className = "ticket";
-    div.dataset.indice = indice
+    div.dataset.indice = indice;
+    div.dataset.estado = parametro1.estado;
 
     div.innerHTML = `
         <h3>${parametro1.titulo}</h3>
@@ -70,6 +130,7 @@ function crearTarjeta(parametro1, indice){
         let pos = parseInt(div.dataset.indice);
         tickets.splice(pos,1);
         actualizarContador();
+        actualizarStats();
         div.remove();
     });
 
@@ -89,10 +150,10 @@ function crearTarjeta(parametro1, indice){
         document.getAnimations("form-ticket").scrollIntoView({ behavior: "smooth" })
     });
 
-    document.getElementById("panel-tickets").appendChild(div);
+    panelTickets.appendChild(div);
 }
 
-const formTicket = document.getElementById("form-ticket");
+
 
 formTicket.addEventListener("submit", function(e){
     e.preventDefault();
@@ -135,9 +196,12 @@ formTicket.addEventListener("submit", function(e){
         crearTarjeta(nuevoTicket, tickets.length - 1);
 
         actualizarContador();
+
+        mostrarToast("El ticket se creo de manera correcta", "error")
     }
 
-
+    actualizarStats();
+    cerrarModal();
     e.target.reset();
 });
 
@@ -145,30 +209,28 @@ formTicket.addEventListener("submit", function(e){
 document.getElementById("btn-limpiar").addEventListener("click",function(){
 
     tickets = [];
-    document.getElementById("panel-tickets").innerHTML = "";
+    panelTickets.innerHTML = "";
+    actualizarStats();
     actualizarContador();
 });
 
 
-// ======================================================================================================
+function mostrarToast(mensaje, tipo = "exito"){
+    toastEl.textContent = mensaje;
+    toastEl.className = `toast toast--${tipo} visible`;
 
+    setTimeout(function(){
+        toastEl.classList.remove("visible");
+    }, 3000);
+}
 
+function actualizarStats(){
+    const nuevos = tickets.filter(t => t.estado === "Nuevo").length;
+    const enCurso = tickets.filter(t => t.estado === "En Curso").length;
+    const resueltos = tickets.filter(t => t.estado === "Resuelto").length;
 
-
-
-
-// formTicket.addEventListener("submit", function(e){
-//     e.preventDefault();
-
-//     const tituloCapturado = document.getElementById("input-titulo").value;
-//     const prioridadCapturada = document.getElementById("input-prioridad").value;
-    
-
-//     console.log("Titulo: ", tituloCapturado);
-//     console.log("Prioridad: ", prioridadCapturada);
-//     // console.log("descripcion: ", descripcionCapturada);
-
-//     const descripcionCapturada = document.getElementById("input-descripcion");
-
-//     descripcionCapturada.textContent = tituloCapturado;
-// });
+    document.getElementById("stat-total").textContent = tickets.length;
+    document.getElementById("stat-nuevos").textContent = nuevos;
+    document.getElementById("stat-curso").textContent = enCurso;
+    document.getElementById("stat-resueltos").textContent = resueltos;
+}
